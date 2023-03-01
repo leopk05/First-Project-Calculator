@@ -1,0 +1,64 @@
+#buttonH {
+    -fx-background-radius: 60;
+    -fx-background-color: rgba(255, 255, 255, 0.03);
+    cursor: pointer; // seems like Cursor.HAND
+}
+
+
+#buttonH:hover {
+        -fx-background-radius: 60;
+        -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+#buttonH:pressed {
+        -fx-background-radius: 60;
+        -fx-background-color: rgba(255, 255, 255, 0.2);
+}
+
+#whiteButton {
+    -fx-background-radius: 60;
+    -fx-background-color: rgb(255,255,255);
+
+}
+
+#whiteButton:hover{
+    -fx-background-radius: 60;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-background-color: rgb(235,235,235);
+}
+
+#whiteButton:pressed{
+    -fx-background-radius: 60;
+    -fx-background-color: #B9B0A8;
+}
+
+#equalButton{
+    -fx-background-radius: 60;
+    -fx-background-color: #FF8E3C;
+}
+
+#equalButton:hover{
+    -fx-background-radius: 60;
+    -fx-background-color: #FF892E;
+}
+
+#equalButton:pressed {
+    -fx-background-radius: 60;
+    -fx-background-color: #FF8E3C;
+}
+
+#lower{
+    -fx-font-family: Arial;
+    -fx-background-color: rgba(255, 255, 255, 0);
+    -fx-font-size: 60px;
+    -fx-text-fill: #FFFFFE;
+
+}
+
+#upper{
+    -fx-font-family: Arial;
+    -fx-background-color: rgba(255, 255, 255, 0);
+    -fx-font-size: 24px;
+    -fx-text-fill: #FF8E3C;
+}
