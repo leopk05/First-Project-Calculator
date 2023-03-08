@@ -66,47 +66,52 @@ public class HelloController {
 
     }
 
-    public void plusCalc(ActionEvent actionEvent){
-        double result = 0;
-        if (lowerDisplay.getLength() != 0){
-            if (upperDisplay.getLength() == 0){
-                upperDisplay.setText(lowerDisplay.getText() + " +");
-                lowerDisplay.clear();
-            } else {
-                double upperIntNumber = Double.parseDouble(symbolRemover(upperDisplay.getText()));
-                double lowerIntNumber = Double.parseDouble(lowerDisplay.getText());
-                result += upperIntNumber;
-                result += lowerIntNumber;
-                if (String.valueOf(result).endsWith(".0")){
-                    upperDisplay.setText(Math.round(result) + " +");
+    public void plusCalc(ActionEvent actionEvent) {
+        actionEvent.isConsumed();
+        if (isLowerEmpty() && upperDisplay.getText().lastIndexOf("-") > 0 || upperDisplay.getText().lastIndexOf("*") > 0 || upperDisplay.getText().lastIndexOf("/") > 0) {
+            checkZero(getUpperNumber(), "+");
+        } else {
+            try {
+                if (upperDisplay.getText().lastIndexOf("-") > 0) {
+                    checkZero((calculator(getUpperNumber(), getLowerNumber(), "-")), " +");
+                    lowerDisplay.clear();
+                } else if (upperDisplay.getText().lastIndexOf("*") > 0) {
+                    checkZero((calculator(getUpperNumber(), getLowerNumber(), "*")), " +");
+                } else if (upperDisplay.getText().lastIndexOf("/") > 0) {
+                    checkZero((calculator(getUpperNumber(), getLowerNumber(), "/")), " +");
                 } else {
-                    upperDisplay.setText(result + " +");
+                    double result;
+                    if (!isLowerEmpty()) {
+                        if (isUpperEmpty()) {
+                            checkZero(getLowerNumber(), " +");
+                            lowerDisplay.clear();
+                        } else {
+                            result = calculator(getUpperNumber(), getLowerNumber(), "+");
+                            checkZero(result, " +");
+                            lowerDisplay.clear();
+                        }
+                    }
                 }
-                lowerDisplay.clear();
+            } catch (RuntimeException ignored) {
+
             }
         }
     }
 
 
-    public void minusCal(ActionEvent actionEvent){
-        double result = 0;
-        if (lowerDisplay.getLength() != 0){
-            if (upperDisplay.getLength() == 0){
-                upperDisplay.setText(lowerDisplay.getText() + " -");
+    public void minusCal(ActionEvent actionEvent) {
+        double result;
+        if (!isLowerEmpty()){
+            if (isUpperEmpty()){
+                checkZero(getLowerNumber(), " -");
                 lowerDisplay.clear();
             } else {
-                double upperIntNumber = Double.parseDouble(symbolRemover(upperDisplay.getText()));
-                double lowerIntNumber = Double.parseDouble(lowerDisplay.getText());
-                result += upperIntNumber;
-                result -= lowerIntNumber;
-                if (String.valueOf(result).endsWith(".0")){
-                    upperDisplay.setText(Math.round(result) + " -");
-                } else {
-                    upperDisplay.setText(result + " -");
-                }
+                result = calculator(getUpperNumber(), getLowerNumber(), "-");
+                checkZero(result, " -");
                 lowerDisplay.clear();
             }
         }
+
     }
 
 
@@ -229,4 +234,70 @@ public class HelloController {
         lowerDisplay.clear();
         upperDisplay.clear();
     }
+
+    private double getLowerNumber(){
+        String removed = symbolRemover(lowerDisplay.getText());
+        int index = lowerDisplay.getText().indexOf("-");
+        if (index == 0){
+            return getLowerNegativeNumber();
+        } else {
+
+            return Double.parseDouble(removed);
+        }
+
+    }
+
+    private double getUpperNumber(){
+        String removed = symbolRemover(upperDisplay.getText());
+        int index = upperDisplay.getText().indexOf("-");
+        if (index == 0){
+            return Double.parseDouble(removed) * -1;
+        }
+        return Double.parseDouble(removed);
+    }
+
+    private double getLowerNegativeNumber(){
+        String removed = symbolRemover(lowerDisplay.getText());
+        return Double.parseDouble(removed) * -1;
+    }
+
+    private void setUpperDisplay(double number, String operator){
+        upperDisplay.setText(String.valueOf(number) + operator);
+    }
+
+    private boolean isLowerEmpty(){
+        if (lowerDisplay.getLength() == 0){
+            return true; // if empty return true
+        } else return false;
+    }
+
+    private boolean isUpperEmpty(){
+        if (upperDisplay.getLength() == 0){
+            return true; // if empty return true
+        } else return false;
+    }
+
+    private void checkZero(double result, String operator){
+        if (String.valueOf(result).endsWith(".0")){
+            upperDisplay.setText(Math.round(result) + operator);
+        } else {
+            upperDisplay.setText(result + operator);
+        }
+    }
+
+
+    public double calculator(double a, double b, String operator){
+        if (Objects.equals(operator, "-")){
+            return a-b;
+        }
+        if (Objects.equals(operator, "+")){
+            return a+b;
+        }
+        if (Objects.equals(operator, "*")){
+            return a*b;
+        }
+            return a/b;
+
+    }
+
 }
