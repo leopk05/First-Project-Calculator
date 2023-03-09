@@ -67,51 +67,44 @@ public class HelloController {
     }
 
     public void plusCalc(ActionEvent actionEvent) {
-        actionEvent.isConsumed();
-        if (isLowerEmpty() && upperDisplay.getText().lastIndexOf("-") > 0 || upperDisplay.getText().lastIndexOf("*") > 0 || upperDisplay.getText().lastIndexOf("/") > 0) {
-            checkZero(getUpperNumber(), "+");
-        } else {
-            try {
-                if (upperDisplay.getText().lastIndexOf("-") > 0) {
-                    checkZero((calculator(getUpperNumber(), getLowerNumber(), "-")), " +");
-                    lowerDisplay.clear();
-                } else if (upperDisplay.getText().lastIndexOf("*") > 0) {
-                    checkZero((calculator(getUpperNumber(), getLowerNumber(), "*")), " +");
-                } else if (upperDisplay.getText().lastIndexOf("/") > 0) {
-                    checkZero((calculator(getUpperNumber(), getLowerNumber(), "/")), " +");
-                } else {
-                    double result;
-                    if (!isLowerEmpty()) {
-                        if (isUpperEmpty()) {
-                            checkZero(getLowerNumber(), " +");
-                            lowerDisplay.clear();
-                        } else {
-                            result = calculator(getUpperNumber(), getLowerNumber(), "+");
-                            checkZero(result, " +");
-                            lowerDisplay.clear();
-                        }
-                    }
-                }
-            } catch (RuntimeException ignored) {
-
+        try{
+            boolean test = firstPut("+");
+            previousCalc("+");
+            System.out.println(previousCalc("+"));
+            if (!test){
+                checkZeroAndSet(calculator(getUpperNumber(), getLowerNumber(), "+"),"+");
             }
+        }catch (RuntimeException ignored){
         }
     }
 
 
     public void minusCal(ActionEvent actionEvent) {
-        double result;
-        if (!isLowerEmpty()){
-            if (isUpperEmpty()){
-                checkZero(getLowerNumber(), " -");
-                lowerDisplay.clear();
-            } else {
-                result = calculator(getUpperNumber(), getLowerNumber(), "-");
-                checkZero(result, " -");
-                lowerDisplay.clear();
+        try{
+            boolean test = firstPut("-");
+            previousCalc("-");
+            System.out.println(previousCalc("-"));
+            if (!test){
+                checkZeroAndSet(calculator(getUpperNumber(), getLowerNumber(), "-"),"-");
             }
+        }catch (RuntimeException ignored){
         }
+    }
 
+    public void times(ActionEvent actionEvent) {
+        try{
+            boolean test = firstPut("*");
+            previousCalc("*");
+            System.out.println(previousCalc("*"));
+            if (!test){
+                checkZeroAndSet(calculator(getUpperNumber(), getLowerNumber(), "*"),"*");
+            }
+        }catch (RuntimeException ignored){
+        }
+    }
+
+    public void inverter(ActionEvent actionEvent) {
+        lowerDisplay.setText(String.valueOf(getLowerNumber() * -1)); //falta adicionar um modo de não ir o 5.0 se não precisar
     }
 
 
@@ -277,11 +270,13 @@ public class HelloController {
         } else return false;
     }
 
-    private void checkZero(double result, String operator){
+    private void checkZeroAndSet(double result, String operator){
         if (String.valueOf(result).endsWith(".0")){
             upperDisplay.setText(Math.round(result) + operator);
+            lowerDisplay.clear();
         } else {
             upperDisplay.setText(result + operator);
+            lowerDisplay.clear();
         }
     }
 
@@ -289,15 +284,43 @@ public class HelloController {
     public double calculator(double a, double b, String operator){
         if (Objects.equals(operator, "-")){
             return a-b;
-        }
-        if (Objects.equals(operator, "+")){
+        }else if (Objects.equals(operator, "+")){
             return a+b;
-        }
-        if (Objects.equals(operator, "*")){
+        }else if (Objects.equals(operator, "*")){
             return a*b;
-        }
+        } else{
             return a/b;
+        }
 
     }
+
+    public boolean previousCalc(String operator) {
+
+        if (upperDisplay.getText().lastIndexOf("-") > 0 && !Objects.equals(operator, "-")){
+            checkZeroAndSet(calculator(getUpperNumber(), getLowerNumber(), "-"), operator);
+            return true;
+        } else if (upperDisplay.getText().lastIndexOf("+") > 0 && !Objects.equals(operator, "+")) {
+            checkZeroAndSet(calculator(getUpperNumber(), getLowerNumber(), "+"), operator);
+            return true;
+        } else if (upperDisplay.getText().lastIndexOf("*") > 0 && !Objects.equals(operator, "*")) {
+            checkZeroAndSet(calculator(getUpperNumber(), getLowerNumber(), "*"), operator);
+            return true;
+        } else if (upperDisplay.getText().lastIndexOf("/") > 0 && !Objects.equals(operator, "/")) {
+            checkZeroAndSet(calculator(getUpperNumber(), getLowerNumber(), "/"), operator);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean firstPut(String operator){
+        if (upperDisplay.getText().length() == 0){
+            checkZeroAndSet(getLowerNumber(), operator);
+            return true;
+        }
+        return false;
+
+    }
+
+
 
 }

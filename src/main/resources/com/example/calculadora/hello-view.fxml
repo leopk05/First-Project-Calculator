@@ -98,7 +98,7 @@
             <Font name="Calibri Bold" size="25.0" />
          </font>
       </Button>
-      <Button id="whiteButton" fx:id="buttonTime" mnemonicParsing="false" prefHeight="72.0" prefWidth="72.0" text="X" GridPane.columnIndex="3" GridPane.rowIndex="2">
+      <Button id="whiteButton" fx:id="buttonTime" onAction="#times" mnemonicParsing="false" prefHeight="72.0" prefWidth="72.0" text="X" GridPane.columnIndex="3" GridPane.rowIndex="2">
          <font>
             <Font name="Calibri" size="25.0" />
          </font>
@@ -123,7 +123,7 @@
             <Font name="Calibri Bold" size="25.0" />
          </font>
       </Button>
-      <Button id="buttonH" fx:id="ButtonErase" onAction="#buttonEraseAction" mnemonicParsing="false" prefHeight="72.0" prefWidth="72.0" text="ap" GridPane.columnIndex="2" GridPane.rowIndex="4">
+      <Button id="buttonH" fx:id="ButtonErase" onAction="#inverter" mnemonicParsing="false" prefHeight="72.0" prefWidth="72.0" text="+/-" GridPane.columnIndex="2" GridPane.rowIndex="4">
          <font>
             <Font size="24.0" />
          </font>
